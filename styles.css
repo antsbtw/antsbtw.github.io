@@ -18,6 +18,16 @@ h1 .highlight {
   color: #ffe600;
 }
 
+.profile-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto 1.5em auto; /* 居中并下边距 */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
 section {
   background: white;
   max-width: 800px;
