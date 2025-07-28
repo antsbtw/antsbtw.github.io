@@ -3,51 +3,593 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ants.BTW - 软件开发者 | 个人主页</title>
+  <title>ants.BTW - 软件开发者</title>
   <meta name="description" content="ants.BTW的个人主页，软件开发初学者，专注于iOS/Android开发、人工智能和网络安全">
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #fff;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* 动态背景 */
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.1;
+    }
+
+    .floating-shapes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .shape {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .shape:nth-child(1) { width: 80px; height: 80px; top: 20%; left: 10%; animation-delay: 0s; }
+    .shape:nth-child(2) { width: 120px; height: 120px; top: 60%; left: 80%; animation-delay: 2s; }
+    .shape:nth-child(3) { width: 60px; height: 60px; top: 80%; left: 20%; animation-delay: 4s; }
+    .shape:nth-child(4) { width: 100px; height: 100px; top: 30%; left: 70%; animation-delay: 1s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    /* 导航栏 */
+    .navbar {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50px;
+      padding: 10px 30px;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    .navbar:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateX(-50%) scale(1.05);
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+
+    .nav-link {
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.5s;
+    }
+
+    .nav-link:hover::before {
+      left: 100%;
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    /* Hero区域 */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      padding: 0 20px;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      animation: heroFadeIn 1s ease-out;
+    }
+
+    @keyframes heroFadeIn {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .profile-photo {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin-bottom: 30px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+      animation: photoFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes photoFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .profile-photo:hover {
+      transform: scale(1.1) rotate(5deg);
+      border-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      background: linear-gradient(45deg, #fff, #a8edea, #fed6e3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .highlight {
+      position: relative;
+      display: inline-block;
+    }
+
+    .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
+      animation: highlightGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes highlightGlow {
+      0%, 100% { opacity: 0.7; transform: scaleX(1); }
+      50% { opacity: 1; transform: scaleX(1.1); }
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      opacity: 0.9;
+      animation: subtitleSlide 1s ease-out 0.3s both;
+    }
+
+    @keyframes subtitleSlide {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 0.9; transform: translateX(0); }
+    }
+
+    .hero-description {
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      opacity: 0.8;
+      animation: descriptionSlide 1s ease-out 0.6s both;
+    }
+
+    @keyframes descriptionSlide {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 0.8; transform: translateX(0); }
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: buttonsAppear 1s ease-out 0.9s both;
+    }
+
+    @keyframes buttonsAppear {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 按钮样式 */
+    .btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+      color: white;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+    }
+
+    /* 产品区域 */
+    .products {
+      padding: 100px 20px;
+      position: relative;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 3rem;
+      text-align: center;
+      margin-bottom: 20px;
+      background: linear-gradient(45deg, #fff, #a8edea);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      margin-bottom: 60px;
+      opacity: 0.8;
+      font-size: 1.2rem;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+
+    /* 产品卡片 */
+    .product-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 30px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+      transform: rotate(45deg);
+      transition: all 0.6s;
+      opacity: 0;
+    }
+
+    .product-card:hover::before {
+      opacity: 1;
+      transform: rotate(45deg) translate(50%, 50%);
+    }
+
+    .product-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .product-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .product-icon {
+      font-size: 3rem;
+      animation: iconBounce 2s ease-in-out infinite;
+    }
+
+    @keyframes iconBounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .product-status {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .developing { background: linear-gradient(45deg, #ff9a9e, #fecfef); color: #333; }
+    .coming-soon { background: linear-gradient(45deg, #a8edea, #fed6e3); color: #333; }
+    .planning { background: linear-gradient(45deg, #ffecd2, #fcb69f); color: #333; }
+
+    .product-title {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #fff;
+    }
+
+    .product-description {
+      opacity: 0.9;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .product-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 25px;
+    }
+
+    .tech-tag {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-small {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      border-radius: 25px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-small.btn-primary {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: white;
+    }
+
+    .btn-small.btn-outline {
+      background: transparent;
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-small:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-small:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* 联系区域 */
+    .contact {
+      padding: 100px 20px;
+      text-align: center;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+
+    .contact-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 40px 20px;
+      text-decoration: none;
+      color: white;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-10px);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .contact-icon {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .contact-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .contact-card p {
+      opacity: 0.8;
+    }
+
+    /* 页脚 */
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+      background: rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-right a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      margin-left: 20px;
+      transition: color 0.3s ease;
+    }
+
+    .footer-right a:hover {
+      color: white;
+    }
+
+    /* 响应式 */
+    @media (max-width: 768px) {
+      .navbar {
+        position: relative;
+        top: 0;
+        transform: none;
+        margin: 20px;
+        border-radius: 15px;
+      }
+
+      .nav-menu {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer-right a {
+        margin: 0 10px;
+      }
+    }
+
+    /* 滚动动画 */
+    .scroll-animate {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .scroll-animate.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
 <body>
-  <!-- 顶部导航栏 -->
-  <nav class="navbar">
-    <div class="nav-container">
-      <div class="nav-logo">
-        <span class="logo-text">ants.<span class="highlight">BTW</span></span>
-      </div>
-      <ul class="nav-menu">
-        <li><a href="#home" class="nav-link active">首页</a></li>
-        <li><a href="#products" class="nav-link">产品</a></li>
-        <li><a href="#about" class="nav-link">关于</a></li>
-        <li><a href="#contact" class="nav-link">联系</a></li>
-      </ul>
-      <div class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+  <!-- 动态背景 -->
+  <div class="bg-animation">
+    <div class="floating-shapes">
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
     </div>
+  </div>
+
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <ul class="nav-menu">
+      <li><a href="#home" class="nav-link">首页</a></li>
+      <li><a href="#products" class="nav-link">产品</a></li>
+      <li><a href="#contact" class="nav-link">联系</a></li>
+    </ul>
   </nav>
 
   <!-- Hero 区域 -->
   <section id="home" class="hero">
-    <div class="hero-container">
-      <div class="hero-content">
-        <img src="images/photo1.jpg" alt="ants.BTW的照片" class="profile-photo" />
-        <h1>你好，我是 <span class="highlight">ants.BTW</span>！</h1>
-        <p class="hero-subtitle">软件开发初学者 | iOS/Android开发 | AI爱好者</p>
-        <p class="hero-description">
-          热衷于开源项目与社区分享，专注于移动应用开发、人工智能和网络安全领域的学习与实践
-        </p>
-        <div class="hero-buttons">
-          <a href="#products" class="btn-primary">查看我的产品</a>
-          <a href="#about" class="btn-secondary">了解更多</a>
-        </div>
+    <div class="hero-content">
+      <img src="images/photo1.jpg" alt="ants.BTW的照片" class="profile-photo" />
+      <h1>你好，我是 <span class="highlight">ants.BTW</span>！</h1>
+      <p class="hero-subtitle">软件开发初学者 | iOS/Android开发 | AI爱好者</p>
+      <p class="hero-description">
+        热衷于开源项目与社区分享，专注于移动应用开发、人工智能和网络安全领域的学习与实践
+      </p>
+      <div class="hero-buttons">
+        <a href="#products" class="btn btn-primary">查看我的产品</a>
+        <a href="#contact" class="btn btn-secondary">联系我</a>
       </div>
     </div>
   </section>
 
   <!-- 产品展示区 -->
-  <section id="products" class="products">
+  <section id="products" class="products scroll-animate">
     <div class="container">
       <h2 class="section-title">🚀 我的产品</h2>
       <p class="section-subtitle">正在开发和维护的软件产品</p>
@@ -69,7 +611,7 @@
           </div>
           <div class="product-actions">
             <button class="btn-small btn-primary" disabled>即将发布</button>
-            <a href="#" class="btn-small btn-outline">了解更多</a>
+            <a href="#contact" class="btn-small btn-outline">了解更多</a>
           </div>
         </div>
 
@@ -86,12 +628,12 @@
           </div>
           <div class="product-actions">
             <button class="btn-small btn-primary" disabled>敬请期待</button>
-            <a href="#" class="btn-small btn-outline">关注更新</a>
+            <a href="#contact" class="btn-small btn-outline">关注更新</a>
           </div>
         </div>
 
         <!-- 更多产品占位 -->
-        <div class="product-card placeholder">
+        <div class="product-card">
           <div class="product-header">
             <div class="product-icon">⚡</div>
             <div class="product-status planning">规划中</div>
@@ -109,55 +651,8 @@
     </div>
   </section>
 
-  <!-- 关于我 -->
-  <section id="about" class="about">
-    <div class="container">
-      <h2 class="section-title">👤 关于我</h2>
-      <div class="about-content">
-        <div class="about-text">
-          <p>
-            我是一名软件开发的初学者，目前正在学习和实践多个技术领域。
-            对编程充满热情，希望通过不断学习和实践来提升自己的技术能力。
-          </p>
-        </div>
-        
-        <div class="skills-section">
-          <h3>🛠 技术栈</h3>
-          <div class="skills-grid">
-            <div class="skill-category">
-              <h4>移动开发</h4>
-              <div class="skill-tags">
-                <span class="skill-tag">iOS (Xcode)</span>
-                <span class="skill-tag">Android</span>
-                <span class="skill-tag">Swift</span>
-              </div>
-            </div>
-            <div class="skill-category">
-              <h4>学习中</h4>
-              <div class="skill-tags">
-                <span class="skill-tag">人工智能</span>
-                <span class="skill-tag">网络安全</span>
-                <span class="skill-tag">软件架构</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="learning-path">
-          <h3>📚 学习路径</h3>
-          <ul class="learning-list">
-            <li>深入学习移动应用开发最佳实践</li>
-            <li>探索人工智能在移动应用中的应用</li>
-            <li>掌握网络安全相关技术</li>
-            <li>参与更多开源项目贡献</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- 联系方式 -->
-  <section id="contact" class="contact">
+  <section id="contact" class="contact scroll-animate">
     <div class="container">
       <h2 class="section-title">📫 联系我</h2>
       <p class="section-subtitle">欢迎交流技术问题或合作机会</p>
@@ -199,17 +694,7 @@
     </div>
   </footer>
 
-  <!-- JavaScript -->
   <script>
-    // 移动端导航菜单切换
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
-
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
-      navMenu.classList.toggle('active');
-    });
-
     // 平滑滚动
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
@@ -224,26 +709,22 @@
       });
     });
 
-    // 导航栏活动状态
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link');
+    // 滚动动画
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
 
-    window.addEventListener('scroll', () => {
-      let current = '';
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (scrollY >= (sectionTop - 200)) {
-          current = section.getAttribute('id');
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
         }
       });
+    }, observerOptions);
 
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-          link.classList.add('active');
-        }
-      });
+    document.querySelectorAll('.scroll-animate').forEach(el => {
+      observer.observe(el);
     });
   </script>
 </body>
